@@ -1,11 +1,17 @@
 "used client";
 
 import Container from "../container";
+import Categories from "./categories";
 import Logo from "./logo";
 import Search from "./search";
 import UserMenu from "./usermenu";
+import { SafeUser } from "@/types";
 
-const Navbar = () => {
+interface NavbarProps {
+  currentUser?: SafeUser | null;
+}
+
+const Navbar = ({ currentUser }: NavbarProps) => {
   return (
     <div className="fixed w-full bg-white z-10 shadow-sm">
       <div className="py-4 border-b-[1px]">
@@ -13,10 +19,11 @@ const Navbar = () => {
           <div className="flex flex-row items-center justify-between gap-3 md:gap-0">
             <Logo />
             <Search />
-            <UserMenu />
+            <UserMenu currentUser={currentUser} />
           </div>
         </Container>
       </div>
+      <Categories />
     </div>
   );
 };

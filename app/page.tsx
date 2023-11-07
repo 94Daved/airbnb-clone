@@ -1,3 +1,39 @@
-export default function Home() {
-  return <main className=""></main>;
+import getCurrentUser from "@/actions/get-current-user";
+import getListings, { IListingsParams } from "@/actions/getListings";
+
+import ClientOnly from "@/components/clientonly";
+import Container from "@/components/container";
+import EmptyState from "@/components/empty-state";
+import ListingCard from "@/components/listings/listing-card";
+
+interface HomeProps {
+  searchParams: IListingsParams;
+}
+
+export default async function Home({ searchParams }: HomeProps) {
+  const listings = await getListings(searchParams);
+  const currentUser = await getCurrentUser();
+
+  if (listings.length === 0) {
+    return (
+      <ClientOnly>
+        <EmptyState showReset />
+      </ClientOnly>
+    );
+  }
+  return (
+    <ClientOnly>
+      <Container>
+        <div className="pt-24 grid grid-cols-1 sm:grid-cols-2 md:grid-col-3 lg:grid-cols-4 xl:grid-cols-6 gap-8">
+          {listings.map((listing) => (
+            <ListingCard
+              key={listing.id}
+              data={listing}
+              currentUser={currentUser}
+            />
+          ))}
+        </div>
+      </Container>
+    </ClientOnly>
+  );
 }

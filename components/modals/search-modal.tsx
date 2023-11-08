@@ -40,7 +40,7 @@ const SearchModal = () => {
     return dynamic(() => import("../../components/map"), {
       ssr: false,
     });
-  }, []);
+  }, [location]);
 
   const onBack = useCallback(() => {
     setStep((value) => value - 1);
